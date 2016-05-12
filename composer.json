@@ -1,0 +1,26 @@
+{
+    "name": "elmar-hinz/typo3-benchmarks",
+    "description": "PHP class to parse TypoScript without conditions",
+    "repositories": [
+    ],
+    "authors": [
+        {
+            "name": "Elmar Hinz",
+            "email": "t3elmar@gmail.com"
+        }
+    ],
+    "require-dev": {
+    },
+    "autoload": {
+        "psr-4" : {
+            "ElmarHinz\\Tests\\": "Tests/",
+            "ElmarHinz\\": "Classes/",
+            "TYPO3\\CMS\\Core\\Tests\\": "typo3/sysext/core/Tests/"
+        }
+    },
+    "require": {
+        "phpunit/phpunit": "^5.3",
+        "typo3/cms": "^8.1",
+        "jaz303/phake": "^0.6.0"
+    }
+}
