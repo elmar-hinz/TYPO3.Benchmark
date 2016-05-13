@@ -17,8 +17,8 @@ class TYPO3Benchmark
 	 */
 	static public function track($trackpoint)
 	{
-		$timestamp = round(microtime(true) * 10000);
-		$out = sprintf("%s:%s\n", $timestamp, $trackpoint);
+		$timestamp = (microtime(true) * 1000);
+		$out = sprintf("%f:%s\n", $timestamp, $trackpoint);
 		if(!self::$handle) {
 			self::$handle = fopen(self::$logFile, 'a');
 		}
@@ -43,8 +43,26 @@ class TYPO3Benchmark
 	 */
 	public function report($file)
 	{
-		$report = $this->format($this->getTrackPoints());
-		$this->write($report, $file);
+		$results = $this->getTrackPoints();
+		$results = $this->evaluateTrack($results);
+		$results = $this->format($results);
+		$this->write($results, $file);
+	}
+
+	public function evaluateTrack($trackPoints)
+	{
+		if(empty($trackPoints)) return [];
+		$start = (int)round(array_keys($trackPoints)[0], 0);
+		$previous = $start;
+		$results = [];
+		foreach($trackPoints as $time => $title) {
+			$time = (int)round($time, 0);
+			$current = $time - $start;
+			$duration = $time - $previous;
+			$results[] = [$current, $duration, $title];
+			$previous = $time;
+		}
+		return $results;
 	}
 
 	public function getTrackPoints(){
@@ -62,11 +80,11 @@ class TYPO3Benchmark
 	 */
 	public function format($results)
 	{
-		$format = "\n * %d %s";
+		$format = "\n * %5d %5d %s";
 		$out  = "\nReport";
 		$out .= "\n======";
-		foreach($results as $stamp => $point) {
-			$out .= sprintf($format, $stamp, $point);
+		foreach($results as $result) {
+			$out .= sprintf($format, $result[0], $result[1], $result[2]);
 		}
 		return $out;
 	}

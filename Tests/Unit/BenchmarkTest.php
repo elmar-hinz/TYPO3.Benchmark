@@ -27,15 +27,32 @@ class BenchmarkTest extends \PHPUnit_Framework_TestCase
 	public function track()
 	{
 		Benchmark::track('p1');
-		usleep(5000);
+		usleep(1000);
 		Benchmark::track('p2');
-		usleep(5000);
+		usleep(1000);
 		Benchmark::track('p3');
 		Benchmark::stopTracking();
 		$points = $this->Benchmark->getTrackPoints();
-		/* $this->assertContains('p1', $points); */
-		$this->assertSame(
-			['p1','p2','p3'], array_values($points));
+		$this->assertSame(['p1','p2','p3'], array_values($points));
+	}
+
+	/**
+	 * @test
+	 */
+	public function evaluateTrack()
+	{
+		$input = [
+			10000 => 'alpha',
+			20000 => 'beta',
+			40000 => 'gamma',
+		];
+		$expectation = [
+			[0, 0, 'alpha'],
+			[10000, 10000, 'beta'],
+			[30000, 20000, 'gamma'],
+		];
+		$actual = $this->Benchmark->evaluateTrack($input);
+		$this->assertSame($expectation, $actual);
 	}
 
 	/**
@@ -43,15 +60,15 @@ class BenchmarkTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function format()
 	{
-		$results = [
-			12345 => 'alpha',
-			24345 => 'beta',
+		$input = [
+			[10000, 0, 'alpha'],
+			[20000, 10000, 'beta'],
+			[40000, 20000, 'gamma'],
 		];
-		$expected = "xxx";
-		$actual = $this->Benchmark->format($results);
-		$this->assertContains('alpha', $actual);
+		$actual = $this->Benchmark->format($input);
 		$this->assertContains('beta', $actual);
-		$this->assertContains('24345', $actual);
+		$this->assertContains('20000', $actual);
+		$this->assertContains('10000', $actual);
 	}
 
 	/**
@@ -72,7 +89,9 @@ class BenchmarkTest extends \PHPUnit_Framework_TestCase
     public function trackAndReport()
 	{
 		Benchmark::track('p1');
+		usleep(1000);
 		Benchmark::track('p2');
+		usleep(1000);
 		Benchmark::stopTracking();
 		$this->Benchmark->report($this->testReportFile);
 		$actual = file_get_contents($this->testReportFile);
