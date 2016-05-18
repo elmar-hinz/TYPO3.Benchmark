@@ -68,6 +68,37 @@ class TimeRangeTest extends \PHPUnit_Framework_TestCase
 	/**
 	 * @test
 	 */
+	public function getDistanceToChildren()
+	{
+		$root = new TimeRange();
+		$child1 = new TimeRange();
+		$child2 = new TimeRange();
+		$root->appendChild($child1);
+		$root->appendChild($child2);
+		$root->start();
+		usleep(1000);
+		$child1->start();
+		$child1->stop();
+		$child2->start();
+		$child2->stop();
+		usleep(1000);
+		$root->stop();
+		$this->assertNull($child1->getDistanceToFirstChild());
+		$node = $root->getDistanceToFirstChild();
+		$this->assertInstanceOf('\\ElmarHinz\\TYPO3Benchmark\\TimeRange', $node);
+		$this->assertGreaterThan(0.001, $node->getDuration());
+		$this->assertLessThan(0.002, $node->getDuration());
+		$this->assertSame('[GAP]', $node->getName());
+		$node = $root->getDistanceFromLastChild();
+		$this->assertInstanceOf('\\ElmarHinz\\TYPO3Benchmark\\TimeRange', $node);
+		$this->assertGreaterThan(0.001, $node->getDuration());
+		$this->assertLessThan(0.002, $node->getDuration());
+		$this->assertSame('[GAP]', $node->getName());
+	}
+
+	/**
+	 * @test
+	 */
 	public function getDistanceToNeighbourBefore()
 	{
 		$root = new TimeRange();

@@ -29,6 +29,11 @@ Offset    Duration              Name
 		}
 		$this->addEntry($node);
 		$this->level++;
+		if($this->enableGaps) {
+			$distance = $node->getDistanceToFirstChild();
+			if($distance && $distance->getDuration() > $this->minimumGapLength)
+				$this->addEntry($distance);
+		}
 	}
 
 	protected function addEntry($node)
@@ -43,6 +48,11 @@ Offset    Duration              Name
 
 	public function onUp($node)
 	{
+		if($this->enableGaps) {
+			$distance = $node->getDistanceFromLastChild();
+			if($distance && $distance->getDuration() > $this->minimumGapLength)
+				$this->addEntry($distance);
+		}
 		$this->level--;
 	}
 

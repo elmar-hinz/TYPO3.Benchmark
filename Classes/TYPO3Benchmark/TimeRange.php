@@ -50,17 +50,36 @@ class TimeRange extends \ElmarHinz\NodeTree\Node
 		return $this->stopTime;
 	}
 
+	public function getDistanceFromLastChild()
+	{
+		$child = $this->getLastChild();
+		if (!$child) {
+			return Null;
+		} else {
+			return $this->getDistance('[GAP TAIL]',
+				$child->getStopTime(), $this->getStopTime());
+		}
+	}
+
+	public function getDistanceToFirstChild()
+	{
+		$child = $this->getFirstChild();
+		if (!$child) {
+			return Null;
+		} else {
+			return $this->getDistance('[GAP HEAD]',
+				$this->getStartTime(), $child->getStartTime());
+		}
+	}
+
 	public function getDistanceToNeighbourBefore()
 	{
 		$neighbour = $this->getNeighbourBefore();
 		if (!$neighbour) {
 			return Null;
 		} else {
-			$range = new TimeRange();
-			$range->setName('[GAP]');
-			$range->setStartTime($neighbour->getStopTime());
-			$range->setStopTime($this->getStartTime());
-			return $range;
+			return $this->getDistance('[GAP]',
+				$neighbour->getStopTime(), $this->getStartTime());
 		}
 	}
 
@@ -72,6 +91,15 @@ class TimeRange extends \ElmarHinz\NodeTree\Node
 	public function stop()
 	{
 		$this->stopTime = microtime(true);
+	}
+
+	protected function getDistance($name, $begin, $end)
+	{
+			$range = new TimeRange();
+			$range->setName($name);
+			$range->setStartTime($begin);
+			$range->setStopTime($end);
+			return $range;
 	}
 
 }
