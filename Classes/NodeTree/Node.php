@@ -2,7 +2,7 @@
 
 namespace ElmarHinz\NodeTree;
 
-require_once("vendor/autoload.php");
+/* require_once("vendor/autoload.php"); */
 
 class Node
 {
@@ -32,6 +32,7 @@ class Node
 
 	public function appendChild($node)
 	{
+		$node->setParent($this);
 		$this->children[] = $node;
 	}
 

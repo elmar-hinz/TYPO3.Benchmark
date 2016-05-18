@@ -18,6 +18,12 @@ task('list', function($application){
         }
 });
 
+desc('Clean up');
+task('clean', function() {
+	passthru('rm -rf typo3temp/*');
+	passthru('ls -al typo3temp/');
+});
+
 group('setup', function() {
 	desc('Help to setup the DB.');
 	task('db', function() {
@@ -34,7 +40,16 @@ tunnnel vagrant/vagrant
 
 group('test', function() {
 	desc('Run all tests');
-	task('all', 'test:unit');
+	task('all', 'test:unit', 'test:func');
+
+	desc('Functional');
+	task('func', function() {
+		passthru(
+			'typo3DatabaseName="test" typo3DatabaseUsername="dev" '.
+			'typo3DatabasePassword="dev" typo3DatabaseHost="127.0.0.1:33333" '.
+			'vendor/bin/phpunit -c typo3/sysext/core/Build/FunctionalTests.xml '.
+			'Tests/Functional/');
+	});
 
 	desc('Benchmark tests');
 	task('bench', function() {

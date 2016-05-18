@@ -11,7 +11,7 @@ require_once("vendor/autoload.php");
 
 class BenchmarkTest extends BenchmarkTestCase
 {
-	protected $testExtensionsToLoad = [ 'typo3conf/ext/ehfaq' ];
+	protected $testExtensionsToLoad = [ 't3bench' ];
 	protected $reportFile = 'Reports/report.rst';
 
     public function setUp()
@@ -20,12 +20,21 @@ class BenchmarkTest extends BenchmarkTestCase
         $this->importDataSet(
             'typo3/sysext/core/Tests/Functional/Fixtures/pages.xml');
         $this->setUpFrontendRootPage(1,
-		  ['EXT:ehfaq/Tests/Functional/Fixtures/Hello.ts']);
+		  ['EXT:t3bench/hello.ts']);
 		$this->benchmark = new Benchmark();
     }
 
     /**
      * @test
+     */
+    public function timeTracker()
+    {
+		$this->getFrontendResponse(1);
+		$this->benchmark->reportTrackTree($this->reportFile);
+	}
+
+    /**
+     * @Xtest
      */
     public function main()
     {
@@ -33,7 +42,6 @@ class BenchmarkTest extends BenchmarkTestCase
 		Benchmark::stopTracking();
 		$this->benchmark->report($this->reportFile);
 	}
-
 
 }
 

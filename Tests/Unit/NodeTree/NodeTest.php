@@ -26,16 +26,18 @@ class NodeTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function setGet()
 	{
+		$this->node->setName('name');
+		$this->assertSame('name', $this->node->getName());
+
 		$parent = new Node();
 		$child1 = new Node();
 		$child2 = new Node();
-		$this->node->setName('name');
-		$this->node->setParent($parent);
-		$this->node->appendChild($child1);
-		$this->node->appendChild($child2);
-		$this->assertSame('name', $this->node->getName());
-		$this->assertSame($parent, $this->node->getParent());
-		$this->assertSame([$child1, $child2], $this->node->getChildren());
+		$parent->appendChild($child1);
+		$parent->appendChild($child2);
+		$this->assertSame([$child1, $child2], $parent->getChildren());
+		$this->assertNull($parent->getParent());
+		$this->assertSame($parent, $child1->getParent());
+		$this->assertSame($parent, $child2->getParent());
 	}
 
 	/**
