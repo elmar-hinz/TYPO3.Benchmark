@@ -117,5 +117,22 @@ class NodeTest extends \PHPUnit_Framework_TestCase
 		$this->assertSame($child1, $child2->getNeighbourBefore());
 	}
 
+	/**
+	 * @test
+	 */
+	public function getFirstAndLastChild()
+	{
+		$parent = $this->node;
+		$child1 = new Node();
+		$child1->setName("child1");
+		$child2 = new Node();
+		$child2->setName("child2");
+		$parent->appendChild($child1);
+		$parent->appendChild($child2);
+		$this->assertSame($child1, $parent->getFirstChild());
+		$this->assertSame($child2, $parent->getLastChild());
+		$this->assertNull($child1->getFirstChild());
+		$this->assertNull($child1->getLastChild());
+	}
 }
 

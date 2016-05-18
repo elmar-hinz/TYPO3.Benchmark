@@ -52,6 +52,22 @@ class Node
 		return $this->children;
 	}
 
+	public function getFirstChild()
+	{
+		if($first = reset($this->children))
+			return $first;
+		else
+			return Null;
+	}
+
+	public function getLastChild()
+	{
+		if($last = end($this->children))
+			return $last;
+		else
+			return Null;
+	}
+
 	public function getNeighbourBefore()
 	{
 		if($this->isRoot()) {
