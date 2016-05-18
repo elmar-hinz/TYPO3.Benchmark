@@ -30,7 +30,7 @@ class BenchmarkTest extends BenchmarkTestCase
     public function timeTracker()
     {
 		$this->getFrontendResponse(1);
-		$this->benchmark->reportTrackTree($this->reportFile);
+		$this->benchmark->report($this->reportFile);
 	}
 
     /**

@@ -35,9 +35,14 @@ class NodeTest extends \PHPUnit_Framework_TestCase
 		$parent->appendChild($child1);
 		$parent->appendChild($child2);
 		$this->assertSame([$child1, $child2], $parent->getChildren());
+		$this->assertSame($parent, $parent->getRoot());
+		$this->assertSame($parent, $child1->getRoot());
 		$this->assertNull($parent->getParent());
 		$this->assertSame($parent, $child1->getParent());
 		$this->assertSame($parent, $child2->getParent());
+		$this->assertTrue($parent->isRoot());
+		$this->assertFalse($child1->isRoot());
+		$this->assertFalse($child2->isRoot());
 	}
 
 	/**
@@ -94,5 +99,23 @@ class NodeTest extends \PHPUnit_Framework_TestCase
 		$pack = serialize($parent);
 		$this->assertEquals($parent, unserialize($pack));
 	}
+
+	/**
+	 * @test
+	 */
+	public function getNeighbourBefore()
+	{
+		$parent = $this->node;
+		$child1 = new Node();
+		$child1->setName("child1");
+		$child2 = new Node();
+		$child2->setName("child2");
+		$parent->appendChild($child1);
+		$parent->appendChild($child2);
+		$this->assertNull($parent->getNeighbourBefore());
+		$this->assertNull($child1->getNeighbourBefore());
+		$this->assertSame($child1, $child2->getNeighbourBefore());
+	}
+
 }
 

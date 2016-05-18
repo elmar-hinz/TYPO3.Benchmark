@@ -25,30 +25,66 @@ class FormatTravelerTest extends \PHPUnit_Framework_TestCase
 	/**
 	 * @test
 	 */
-	public function format()
+	public function formatWithGaps()
 	{
-		$this->traveler->onDown($this->mockNode('A', 0.0, 222.222));
-		$this->traveler->onDown($this->mockNode('AA', 0.0, 111.111));
+		$this->traveler->enableGaps();
+		$this->traveler->onDown($this->mockNode('A', 0.0, 0.222, true));
+		$this->traveler->onDown($this->mockNode('AA', 0.0, 0.111));
 		$this->traveler->onUp(Null);
-		$this->traveler->onDown($this->mockNode('AB', 111.111, 111.111));
+		$this->traveler->onDown($this->mockNode('AB', 0.111, 0.111));
 		$this->traveler->onUp(Null);
 		$this->traveler->onUp(Null);
-		$this->traveler->onDown($this->mockNode('B', 222.222, 333.333));
+		$this->traveler->onDown($this->mockNode('B', 0.222, 0.333));
 		$this->traveler->onUp(Null);
 		$expect = '
-0000.0000  0222.2220              A
-0000.0000    0111.1110              AA
-0111.1110    0111.1110              AB
-0222.2220  0333.3330              B';
+Offset    Duration              Name
+----------------------------------------------------------------------
+ 0.00000   0.22200              A
+ 0.00000     0.11100              AA
+ 0.99900     0.99900              [GAP]
+ 0.11100     0.11100              AB
+ 0.22200   0.33300              B
+';
 		$this->assertSame($expect, $this->traveler->getOutput());
 	}
 
-	protected function mockNode($name, $startTime, $duration)
+	/**
+	 * @test
+	 */
+	public function format()
+	{
+		$this->traveler->onDown($this->mockNode('A', 0.0, 0.222, true));
+		$this->traveler->onDown($this->mockNode('AA', 0.0, 0.111));
+		$this->traveler->onUp(Null);
+		$this->traveler->onDown($this->mockNode('AB', 0.111, 0.111));
+		$this->traveler->onUp(Null);
+		$this->traveler->onUp(Null);
+		$this->traveler->onDown($this->mockNode('B', 0.222, 0.333));
+		$this->traveler->onUp(Null);
+		$expect = '
+Offset    Duration              Name
+----------------------------------------------------------------------
+ 0.00000   0.22200              A
+ 0.00000     0.11100              AA
+ 0.11100     0.11100              AB
+ 0.22200   0.33300              B
+';
+		$this->assertSame($expect, $this->traveler->getOutput());
+	}
+
+	protected function mockNode($name, $offset, $duration, $isRoot = false)
 	{
 		$node = $this->getMockBuilder('\\ElmarHinz\\TYPO3Benchmark\\TimeRange')->getMock();
-		$node->method('getName')->willReturn($name);
-		$node->method('getStartTime')->willReturn($startTime);
+		$node->method('isRoot')->willReturn($isRoot);
+		$node->method('getTimeOffset')->willReturn($offset);
 		$node->method('getDuration')->willReturn($duration);
+		$node->method('getName')->willReturn($name);
+		if($name == 'AB') {
+			$distance = $this->mockNode('[GAP]', 0.999, 0.999);
+			$node->method('getDistanceToNeighbourBefore')->willReturn($distance);
+		} else {
+			$node->method('getDistanceToNeighbourBefore')->willReturn(Null);
+		}
 		return $node;
 	}
 

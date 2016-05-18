@@ -2,8 +2,6 @@
 
 namespace ElmarHinz\NodeTree;
 
-/* require_once("vendor/autoload.php"); */
-
 class Node
 {
 	protected $parent = Null;
@@ -30,6 +28,19 @@ class Node
 		return $this->parent;
 	}
 
+	public function isRoot()
+	{
+		return ($this->parent === Null);
+	}
+
+	public function getRoot()
+	{
+		if($this->isRoot())
+			return $this;
+		else
+			return $this->parent->getRoot();
+	}
+
 	public function appendChild($node)
 	{
 		$node->setParent($this);
@@ -39,6 +50,20 @@ class Node
 	public function getChildren()
 	{
 		return $this->children;
+	}
+
+	public function getNeighbourBefore()
+	{
+		if($this->isRoot()) {
+			return Null;
+		} else {
+			$neighbours = $this->getParent()->getChildren();
+			$key = array_search($this, $neighbours) - 1;
+			if($key < 0)
+				return Null;
+			else
+				return $neighbours[$key];
+		}
 	}
 
 	public function travel($traveler)

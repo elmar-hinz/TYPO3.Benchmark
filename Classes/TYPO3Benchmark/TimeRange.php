@@ -25,9 +25,14 @@ class TimeRange extends \ElmarHinz\NodeTree\Node
 		return $this->stopTime - $this->startTime;
 	}
 
-	public function start()
+	public function getTimeOffset()
 	{
-		$this->startTime = microtime(true);
+		return $this->startTime - $this->getRoot()->getStartTime();
+	}
+
+	public function setStartTime($time)
+	{
+		$this->startTime = $time;
 	}
 
 	public function getStartTime()
@@ -35,14 +40,38 @@ class TimeRange extends \ElmarHinz\NodeTree\Node
 		return $this->startTime;
 	}
 
-	public function stop()
+	public function setStopTime($time)
 	{
-		$this->stopTime = microtime(true);
+		$this->stopTime = $time;
 	}
 
 	public function getStopTime()
 	{
 		return $this->stopTime;
+	}
+
+	public function getDistanceToNeighbourBefore()
+	{
+		$neighbour = $this->getNeighbourBefore();
+		if (!$neighbour) {
+			return Null;
+		} else {
+			$range = new TimeRange();
+			$range->setName('[GAP]');
+			$range->setStartTime($neighbour->getStopTime());
+			$range->setStopTime($this->getStartTime());
+			return $range;
+		}
+	}
+
+	public function start()
+	{
+		$this->startTime = microtime(true);
+	}
+
+	public function stop()
+	{
+		$this->stopTime = microtime(true);
 	}
 
 }
