@@ -27,22 +27,28 @@ class FormatTravelerTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function formatWithGaps()
 	{
+		$mockA = $this->mockNode('A', 0.0, 0.222, true);
+		$mockAA = $this->mockNode('AA', 0.0, 0.111);
+		$mockAB = $this->mockNode('AB', 0.111, 0.111);
+		$mockB = $this->mockNode('B', 0.222, 0.333);
 		$this->traveler->enableGaps();
-		$this->traveler->onDown($this->mockNode('A', 0.0, 0.222, true));
-		$this->traveler->onDown($this->mockNode('AA', 0.0, 0.111));
-		$this->traveler->onUp(Null);
-		$this->traveler->onDown($this->mockNode('AB', 0.111, 0.111));
-		$this->traveler->onUp(Null);
-		$this->traveler->onUp(Null);
-		$this->traveler->onDown($this->mockNode('B', 0.222, 0.333));
-		$this->traveler->onUp(Null);
+		$this->traveler->onDown($mockA);
+		$this->traveler->onDown($mockAA);
+		$this->traveler->onUp($mockAA);
+		$this->traveler->onDown($mockAB);
+		$this->traveler->onUp($mockAB);
+		$this->traveler->onUp($mockA);
+		$this->traveler->onDown($mockB);
+		$this->traveler->onUp($mockB);
 		$expect = '
 Offset    Duration              Name
 ----------------------------------------------------------------------
  0.00000   0.22200              A
+ 1.00000     1.00000              [GAP]
  0.00000     0.11100              AA
- 0.99900     0.99900              [GAP]
+ 2.00000     2.00000              [GAP]
  0.11100     0.11100              AB
+ 3.00000     3.00000              [GAP]
  0.22200   0.33300              B
 ';
 		$this->assertSame($expect, $this->traveler->getOutput());
@@ -79,11 +85,23 @@ Offset    Duration              Name
 		$node->method('getTimeOffset')->willReturn($offset);
 		$node->method('getDuration')->willReturn($duration);
 		$node->method('getName')->willReturn($name);
+		if($name == 'A') {
+			$distance = $this->mockNode('[GAP]', 1.0, 1.0);
+			$node->method('getDistanceToFirstChild')->willReturn($distance);
+		} else {
+			$node->method('getDistanceToFirstChild')->willReturn(Null);
+		}
 		if($name == 'AB') {
-			$distance = $this->mockNode('[GAP]', 0.999, 0.999);
+			$distance = $this->mockNode('[GAP]', 2.0, 2.0);
 			$node->method('getDistanceToNeighbourBefore')->willReturn($distance);
 		} else {
 			$node->method('getDistanceToNeighbourBefore')->willReturn(Null);
+		}
+		if($name == 'A') {
+			$distance = $this->mockNode('[GAP]', 3.0, 3.0);
+			$node->method('getDistanceFromLastChild')->willReturn($distance);
+		} else {
+			$node->method('getDistanceFromLastChild')->willReturn(Null);
 		}
 		return $node;
 	}

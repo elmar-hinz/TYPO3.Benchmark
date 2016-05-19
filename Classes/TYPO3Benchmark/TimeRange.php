@@ -56,7 +56,7 @@ class TimeRange extends \ElmarHinz\NodeTree\Node
 		if (!$child) {
 			return Null;
 		} else {
-			return $this->getDistance('[GAP TAIL]',
+			return $this->getDistance('[GAP]',
 				$child->getStopTime(), $this->getStopTime());
 		}
 	}
@@ -67,7 +67,7 @@ class TimeRange extends \ElmarHinz\NodeTree\Node
 		if (!$child) {
 			return Null;
 		} else {
-			return $this->getDistance('[GAP HEAD]',
+			return $this->getDistance('[GAP]',
 				$this->getStartTime(), $child->getStartTime());
 		}
 	}
