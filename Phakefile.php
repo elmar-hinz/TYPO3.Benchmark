@@ -57,7 +57,7 @@ group('test', function() {
 			'typo3DatabaseName="test" typo3DatabaseUsername="dev" '.
 			'typo3DatabasePassword="dev" typo3DatabaseHost="127.0.0.1:33333" '.
 			'vendor/bin/phpunit -c typo3/sysext/core/Build/FunctionalTests.xml '.
-			'Tests/Benchmark/BenchmarkTest.php');
+			'Tests/Benchmark/');
 		print(PHP_EOL);
 		print(PHP_EOL);
 		print(file_get_contents($GLOBALS['reportFile']));
