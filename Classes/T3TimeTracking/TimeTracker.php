@@ -1,11 +1,11 @@
 <?php
 
-namespace ElmarHinz\TYPO3Benchmark;
+namespace ElmarHinz\T3TimeTracking;
 
 /* require_once("vendor/autoload.php"); */
 
 use TYPO3\CMS\Core\TimeTracker\TimeTracker as CoreTimeTracker;
-use ElmarHinz\TYPO3Benchmark\TimeRange;
+use ElmarHinz\T3TimeTracking\TimeRange;
 
 class TimeTracker extends CoreTimeTracker
 {

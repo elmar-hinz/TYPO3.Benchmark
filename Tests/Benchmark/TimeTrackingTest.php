@@ -2,17 +2,16 @@
 
 namespace ElmarHinz\Tests\Benchmark;
 
-use ElmarHinz\TYPO3Benchmark as Benchmark;
+use ElmarHinz\T3TimeTracking as Tracking;
 use ElmarHinz\Tests\BenchmarkTestCase;
 use TYPO3\CMS\Core\Database\DatabaseConnection;
-use TYPO3\CMS\Core\Utility\GeneralUtility as Utility;
 
 require_once("vendor/autoload.php");
 
-class BenchmarkTest extends BenchmarkTestCase
+class TimeTrackingTest extends BenchmarkTestCase
 {
 	protected $testExtensionsToLoad = [ 't3bench' ];
-	protected $reportFile = 'Reports/report.rst';
+	protected $reportFile = 'Reports/timeTracking.rst';
 
     public function setUp()
     {
@@ -21,7 +20,7 @@ class BenchmarkTest extends BenchmarkTestCase
             'typo3/sysext/core/Tests/Functional/Fixtures/pages.xml');
         $this->setUpFrontendRootPage(1,
 		  ['EXT:t3bench/hello.ts']);
-		$this->benchmark = new Benchmark();
+		$this->tracking = new Tracking();
     }
 
     /**
@@ -30,17 +29,7 @@ class BenchmarkTest extends BenchmarkTestCase
     public function timeTracker()
     {
 		$this->getFrontendResponse(1);
-		$this->benchmark->report($this->reportFile);
-	}
-
-    /**
-     * @Xtest
-     */
-    public function main()
-    {
-        $this->getFrontendResponse(1);
-		Benchmark::stopTracking();
-		$this->benchmark->report($this->reportFile);
+		$this->tracking->report($this->reportFile);
 	}
 
 }

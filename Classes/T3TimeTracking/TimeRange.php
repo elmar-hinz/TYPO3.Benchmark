@@ -1,6 +1,6 @@
 <?php
 
-namespace ElmarHinz\TYPO3Benchmark;
+namespace ElmarHinz\T3TimeTracking;
 
 /* require_once("vendor/autoload.php"); */
 

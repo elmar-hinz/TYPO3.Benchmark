@@ -2,12 +2,9 @@
 
 namespace ElmarHinz;
 
-class TYPO3Benchmark
+class T3TimeTracking
 {
-	static protected $trackPoints = array();
 	static protected $trackTreeFile = '/tmp/trackTree.txt';
-	static protected $logFile = '/tmp/trackPoints.txt';
-	static protected $handle = Null;
 
 	/**
 	 * Register time Tracker
@@ -17,7 +14,7 @@ class TYPO3Benchmark
 	 */
 	static public function registerTimeTracker()
 	{
-         $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects']['TYPO3\\CMS\\Core\\TimeTracker\\TimeTracker']['className'] = '\\ElmarHinz\\TYPO3Benchmark\\TimeTracker';
+         $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects']['TYPO3\\CMS\\Core\\TimeTracker\\TimeTracker']['className'] = '\\ElmarHinz\\T3TimeTracking\\TimeTracker';
 	}
 
 	/**
@@ -83,7 +80,7 @@ class TYPO3Benchmark
 	 */
 	public function formatTrackTree($trackTree)
 	{
-		$traveler = new \ElmarHinz\TYPO3Benchmark\FormatTraveler();
+		$traveler = new \ElmarHinz\T3TimeTracking\FormatTraveler();
 		$traveler->enableGaps();
 		$trackTree->travel($traveler);
 		return $traveler->getOutput();

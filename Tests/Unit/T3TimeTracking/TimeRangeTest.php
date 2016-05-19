@@ -1,8 +1,8 @@
 <?php
 
-namespace ElmarHinz\Tests\Unit\TYPO3Benchmark;
+namespace ElmarHinz\Tests\Unit\T3TimeTracking;
 
-use ElmarHinz\TYPO3Benchmark\TimeRange as TimeRange;
+use ElmarHinz\T3TimeTracking\TimeRange as TimeRange;
 
 require_once("vendor/autoload.php");
 
@@ -18,7 +18,7 @@ class TimeRangeTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function construct()
 	{
-		$this->assertInstanceOf('\ElmarHinz\TYPO3Benchmark\TimeRange', $this->node);
+		$this->assertInstanceOf('\ElmarHinz\T3TimeTracking\TimeRange', $this->node);
 	}
 
 	/**
@@ -85,12 +85,12 @@ class TimeRangeTest extends \PHPUnit_Framework_TestCase
 		$root->stop();
 		$this->assertNull($child1->getDistanceToFirstChild());
 		$node = $root->getDistanceToFirstChild();
-		$this->assertInstanceOf('\\ElmarHinz\\TYPO3Benchmark\\TimeRange', $node);
+		$this->assertInstanceOf('\\ElmarHinz\\T3TimeTracking\\TimeRange', $node);
 		$this->assertGreaterThan(0.001, $node->getDuration());
 		$this->assertLessThan(0.002, $node->getDuration());
 		$this->assertSame('[GAP]', $node->getName());
 		$node = $root->getDistanceFromLastChild();
-		$this->assertInstanceOf('\\ElmarHinz\\TYPO3Benchmark\\TimeRange', $node);
+		$this->assertInstanceOf('\\ElmarHinz\\T3TimeTracking\\TimeRange', $node);
 		$this->assertGreaterThan(0.001, $node->getDuration());
 		$this->assertLessThan(0.002, $node->getDuration());
 		$this->assertSame('[GAP]', $node->getName());
@@ -116,7 +116,7 @@ class TimeRangeTest extends \PHPUnit_Framework_TestCase
 		$this->assertNull($root->getDistanceToNeighbourBefore());
 		$this->assertNull($child1->getDistanceToNeighbourBefore());
 		$nb = $child2->getDistanceToNeighbourBefore();
-		$this->assertInstanceOf('\\ElmarHinz\\TYPO3Benchmark\\TimeRange', $nb);
+		$this->assertInstanceOf('\\ElmarHinz\\T3TimeTracking\\TimeRange', $nb);
 		$this->assertGreaterThan(0.001, $nb->getDuration());
 		$this->assertLessThan(0.002, $nb->getDuration());
 		$this->assertSame('[GAP]', $nb->getName());

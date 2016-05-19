@@ -1,7 +1,5 @@
 <?php
 
-$GLOBALS['reportFile'] = 'Reports/report.rst';
-
 require_once("vendor/autoload.php");
 
 task('default', 'list');
@@ -20,6 +18,7 @@ task('list', function($application){
 
 desc('Clean up');
 task('clean', function() {
+	passthru('rm -f Reports/*');
 	passthru('rm -rf typo3temp/*');
 	passthru('ls -al typo3temp/');
 });
@@ -60,7 +59,7 @@ group('test', function() {
 			'Tests/Benchmark/');
 		print(PHP_EOL);
 		print(PHP_EOL);
-		print(file_get_contents($GLOBALS['reportFile']));
+		print(file_get_contents('Reports/timeTracking.rst'));
 		print(PHP_EOL);
 		print(PHP_EOL);
 	});

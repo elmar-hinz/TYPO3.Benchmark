@@ -1,8 +1,8 @@
 <?php
 
-namespace ElmarHinz\Tests\Unit\TYPO3Benchmark;
+namespace ElmarHinz\Tests\Unit\T3TimeTracking;
 
-use ElmarHinz\TYPO3Benchmark\TimeTracker as Tracker;
+use ElmarHinz\T3TimeTracking\TimeTracker as Tracker;
 
 require_once("vendor/autoload.php");
 
@@ -18,8 +18,8 @@ class TimeTrackerTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function construct()
 	{
-		$this->assertInstanceOf('\ElmarHinz\TYPO3Benchmark\TimeTracker', $this->tracker);
-		$this->assertInstanceOf('\ElmarHinz\TYPO3Benchmark\TimeRange',
+		$this->assertInstanceOf('\ElmarHinz\T3TimeTracking\TimeTracker', $this->tracker);
+		$this->assertInstanceOf('\ElmarHinz\T3TimeTracking\TimeRange',
 		$this->tracker->getTree());
 	}
 

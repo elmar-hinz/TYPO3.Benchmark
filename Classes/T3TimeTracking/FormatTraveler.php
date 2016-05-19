@@ -1,6 +1,6 @@
 <?php
 
-namespace ElmarHinz\TYPO3Benchmark;
+namespace ElmarHinz\T3TimeTracking;
 
 class FormatTraveler implements \ElmarHinz\NodeTree\TravelerInterface
 {

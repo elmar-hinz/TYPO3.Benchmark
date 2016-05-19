@@ -2,8 +2,8 @@
 
 namespace ElmarHinz\Tests\Unit;
 
-use ElmarHinz\TYPO3Benchmark as Benchmark;
-use ElmarHinz\TYPO3Benchmark\TimeRange as TimeRange;
+use ElmarHinz\T3TimeTracking as Tracking;
+use ElmarHinz\T3TimeTracking\TimeRange as TimeRange;
 
 /* require_once("vendor/autoload.php"); */
 
@@ -14,7 +14,7 @@ class TYPO3BenchmarkTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
 		$this->tearDown();
-		$this->benchmark = new Benchmark();
+		$this->benchmark = new Tracking();
     }
 
     public function tearDown()
@@ -27,7 +27,7 @@ class TYPO3BenchmarkTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function classname()
 	{
-		$this->assertEquals('ElmarHinz\TYPO3Benchmark\TimeRange', TimeRange::class);
+		$this->assertEquals('ElmarHinz\T3TimeTracking\TimeRange', TimeRange::class);
 	}
 
 	/**
@@ -35,9 +35,9 @@ class TYPO3BenchmarkTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function registerTimeTracker()
 	{
-		Benchmark::registerTimeTracker();
+		Tracking::registerTimeTracker();
 		$this->assertTrue(isset($GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects']['TYPO3\\CMS\\Core\\TimeTracker\\TimeTracker']['className']));
-		$expect = '\\ElmarHinz\\TYPO3Benchmark\\TimeTracker';
+		$expect = '\\ElmarHinz\\T3TimeTracking\\TimeTracker';
 		$actual = $GLOBALS['TYPO3_CONF_VARS']['SYS']['Objects']['TYPO3\\CMS\\Core\\TimeTracker\\TimeTracker']['className'];
 		$this->assertSame($expect, $actual);
 	}
@@ -49,7 +49,7 @@ class TYPO3BenchmarkTest extends \PHPUnit_Framework_TestCase
 	{
 		$tree = new TimeRange();
 		$tree->setName('Name');
-		Benchmark::writeTrackTree($tree);
+		Tracking::writeTrackTree($tree);
 		$actual = $this->benchmark->readTrackTree();
 		$this->assertEquals($tree, $actual);
 	}

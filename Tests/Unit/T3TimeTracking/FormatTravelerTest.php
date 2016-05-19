@@ -1,9 +1,9 @@
 <?php
 
-namespace ElmarHinz\Tests\Unit\TYPO3Benchmark;
+namespace ElmarHinz\Tests\Unit\T3TimeTracking;
 
-use ElmarHinz\TYPO3Benchmark\FormatTraveler as Traveler;
-use ElmarHinz\TYPO3Benchmark\TimeRange as TimeRange;
+use ElmarHinz\T3TimeTracking\FormatTraveler as Traveler;
+use ElmarHinz\T3TimeTracking\TimeRange as TimeRange;
 
 require_once("vendor/autoload.php");
 
@@ -19,7 +19,7 @@ class FormatTravelerTest extends \PHPUnit_Framework_TestCase
 	 */
 	public function construct()
 	{
-		$this->assertInstanceOf('\ElmarHinz\TYPO3Benchmark\FormatTraveler', $this->traveler);
+		$this->assertInstanceOf('\ElmarHinz\T3TimeTracking\FormatTraveler', $this->traveler);
 	}
 
 	/**
@@ -80,7 +80,7 @@ Offset    Duration              Name
 
 	protected function mockNode($name, $offset, $duration, $isRoot = false)
 	{
-		$node = $this->getMockBuilder('\\ElmarHinz\\TYPO3Benchmark\\TimeRange')->getMock();
+		$node = $this->getMockBuilder('\\ElmarHinz\\T3TimeTracking\\TimeRange')->getMock();
 		$node->method('isRoot')->willReturn($isRoot);
 		$node->method('getTimeOffset')->willReturn($offset);
 		$node->method('getDuration')->willReturn($duration);
