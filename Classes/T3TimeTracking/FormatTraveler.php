@@ -7,8 +7,13 @@ class FormatTraveler implements \ElmarHinz\NodeTree\TravelerInterface
 	protected $level = 0;
 	protected $out;
 	protected $header = '
-Offset    Duration              Name
-----------------------------------------------------------------------
+Time Tracker Tree
+=================
+
+::
+
+    Offset    Duration              Name
+    ----------------------------------------------------------------------
 ';
 	protected $enableGaps = false;
 	protected $minimumGapLength = 0.01;
@@ -39,7 +44,7 @@ Offset    Duration              Name
 	protected function addEntry($node)
 	{
 		$indent = 2 * $this->level;
-		$format = "%' 8.5f %' ".$indent."s %' 8.5f              %s\n";
+		$format = "    %' 8.5f %' ".$indent."s %' 8.5f              %s\n";
 		$offset = $node->getTimeOffset();
 		$duration = $node->getDuration();
 		$name = $node->getName();

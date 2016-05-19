@@ -41,17 +41,17 @@ class FormatTravelerTest extends \PHPUnit_Framework_TestCase
 		$this->traveler->onDown($mockB);
 		$this->traveler->onUp($mockB);
 		$expect = '
-Offset    Duration              Name
-----------------------------------------------------------------------
- 0.00000   0.22200              A
- 1.00000     1.00000              [GAP]
- 0.00000     0.11100              AA
- 2.00000     2.00000              [GAP]
- 0.11100     0.11100              AB
- 3.00000     3.00000              [GAP]
- 0.22200   0.33300              B
+    Offset    Duration              Name
+    ----------------------------------------------------------------------
+     0.00000   0.22200              A
+     1.00000     1.00000              [GAP]
+     0.00000     0.11100              AA
+     2.00000     2.00000              [GAP]
+     0.11100     0.11100              AB
+     3.00000     3.00000              [GAP]
+     0.22200   0.33300              B
 ';
-		$this->assertSame($expect, $this->traveler->getOutput());
+		$this->stringEndsWith($expect, $this->traveler->getOutput());
 	}
 
 	/**
@@ -68,14 +68,14 @@ Offset    Duration              Name
 		$this->traveler->onDown($this->mockNode('B', 0.222, 0.333));
 		$this->traveler->onUp(Null);
 		$expect = '
-Offset    Duration              Name
-----------------------------------------------------------------------
- 0.00000   0.22200              A
- 0.00000     0.11100              AA
- 0.11100     0.11100              AB
- 0.22200   0.33300              B
+    Offset    Duration              Name
+    ----------------------------------------------------------------------
+     0.00000   0.22200              A
+     0.00000     0.11100              AA
+     0.11100     0.11100              AB
+     0.22200   0.33300              B
 ';
-		$this->assertSame($expect, $this->traveler->getOutput());
+		$this->stringEndsWith($expect, $this->traveler->getOutput());
 	}
 
 	protected function mockNode($name, $offset, $duration, $isRoot = false)

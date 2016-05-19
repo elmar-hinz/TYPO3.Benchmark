@@ -16,6 +16,14 @@ task('list', function($application){
         }
 });
 
+desc('Full report');
+task('report', 'clean', 'test:time', 'test:php', function() {
+	\ElmarHinz\T3BenchmarkReport::main();
+		print(PHP_EOL);
+		print(PHP_EOL);
+		print(@file_get_contents('Reports/Report.rst'));
+});
+
 desc('Clean up');
 task('clean', function() {
 	passthru('rm -f Reports/*');
@@ -38,28 +46,48 @@ tunnnel vagrant/vagrant
 });
 
 group('test', function() {
-	desc('Run all tests');
+	desc('Run all non-benchmark tests');
 	task('all', 'test:unit', 'test:func');
 
 	desc('Functional');
 	task('func', function() {
-		passthru(
+		$cmd =
 			'typo3DatabaseName="test" typo3DatabaseUsername="dev" '.
 			'typo3DatabasePassword="dev" typo3DatabaseHost="127.0.0.1:33333" '.
 			'vendor/bin/phpunit -c typo3/sysext/core/Build/FunctionalTests.xml '.
-			'Tests/Functional/');
+			'Tests/Functional/';
+		/* print($cmd . "\n"); */
+		passthru($cmd);
 	});
 
-	desc('Benchmark tests');
-	task('bench', function() {
-		passthru(
+	desc('PHP class files reading and parsing');
+	task('php', function() {
+		$cmd =
 			'typo3DatabaseName="test" typo3DatabaseUsername="dev" '.
 			'typo3DatabasePassword="dev" typo3DatabaseHost="127.0.0.1:33333" '.
 			'vendor/bin/phpunit -c typo3/sysext/core/Build/FunctionalTests.xml '.
-			'Tests/Benchmark/');
+			'Tests/Benchmark/ReadingAndParsingPHPTest.php';
+		/* print($cmd ."\n"); */
+		passthru($cmd);
 		print(PHP_EOL);
 		print(PHP_EOL);
-		print(file_get_contents('Reports/timeTracking.rst'));
+		print(@file_get_contents('Reports/readingAndParsingPHP.rst'));
+		print(PHP_EOL);
+		print(PHP_EOL);
+	});
+
+	desc('TimeTracker');
+	task('time', function() {
+		$cmd =
+			'typo3DatabaseName="test" typo3DatabaseUsername="dev" '.
+			'typo3DatabasePassword="dev" typo3DatabaseHost="127.0.0.1:33333" '.
+			'vendor/bin/phpunit -c typo3/sysext/core/Build/FunctionalTests.xml '.
+			'Tests/Benchmark/TimeTrackingTest.php';
+		/* print($cmd ."\n"); */
+		passthru($cmd);
+		print(PHP_EOL);
+		print(PHP_EOL);
+		print(@file_get_contents('Reports/timeTracking.rst'));
 		print(PHP_EOL);
 		print(PHP_EOL);
 	});

@@ -15,7 +15,7 @@ class TimeTrackingTest extends BenchmarkTestCase
 
     public function setUp()
     {
-        parent::setUp();
+		parent::setUp();
         $this->importDataSet(
             'typo3/sysext/core/Tests/Functional/Fixtures/pages.xml');
         $this->setUpFrontendRootPage(1,
